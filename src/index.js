@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import librosRoutes from "./api/librosRoutes.js";
 import {
   errorHandler,
@@ -15,11 +17,17 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PUBLIC_DIR = path.join(__dirname, "..", "public");
 
 // Middlewares globales
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
+
+// Archivos estáticos del frontend
+app.use(express.static(PUBLIC_DIR));
 
 // Endpoint de health check
 app.get("/ping", (req, res) => {
@@ -48,6 +56,7 @@ app.get("/", (req, res) => {
         prestamos: "/api/prestamos",
         multas: "/api/multas",
       },
+      ui: "/app",
     },
   });
 });
@@ -57,6 +66,11 @@ app.use("/api/socios", sociosRoutes);
 app.use("/api/libros", librosRoutes);
 app.use("/api/prestamos", prestamosRoutes);
 app.use("/api/multas", multasRoutes);
+
+// UI del front (cualquier ruta que empiece con /app sirve el index.html de React)
+app.use("/app", (req, res) => {
+  res.sendFile(path.join(PUBLIC_DIR, "index.html"));
+});
 
 // Middleware para rutas no encontradas (404)
 app.use(notFoundHandler);
@@ -73,7 +87,8 @@ app.listen(PORT, () => {
     }`
   );
   console.log(`🔗 Health check: http://localhost:${PORT}/ping`);
-  console.log(`📖 API Docs: http://localhost:${PORT}/\n`);
+  console.log(`�️  UI: http://localhost:${PORT}/app`);
+  console.log(`�📖 API Info: http://localhost:${PORT}/\n`);
 });
 
 export default app;

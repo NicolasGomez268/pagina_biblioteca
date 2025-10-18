@@ -24,5 +24,6 @@ npm run build
 ```
 
 Notas:
+
 - El proxy está configurado en `vite.config.js` para redirigir `/api` a `http://localhost:3000` en desarrollo.
 - Las rutas principales: `/socios`, `/libros`, `/prestamos`, `/multas`.
