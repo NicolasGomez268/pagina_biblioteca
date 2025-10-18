@@ -1,0 +1,52 @@
+
+@startuml
+hide methods
+hide stereotypes
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+entity "socio" as socio {
+  * nro_socio : bigint <<PK>>
+  dni : varchar <<UNIQUE>>
+  nombre_completo : varchar
+  telefono : varchar
+  direccion : varchar
+  email : varchar
+}
+
+entity "libro" as libro {
+  * isbn : varchar <<PK>>
+  titulo : varchar
+  autor : varchar
+  estado : varchar
+}
+
+entity "prestamo" as prestamo {
+  * id_prestamo : bigint <<PK>>
+  fecha_inicio : date
+  fecha_devolucion_prevista : date
+  nro_socio : bigint <<FK>>
+  isbn : varchar <<FK>>
+}
+
+entity "devolucion" as devolucion {
+  * id_devolucion : bigint <<PK>>
+  id_prestamo : bigint <<FK, UNIQUE>>
+  fecha_devolucion : date
+  estado_fisico : varchar
+  observaciones : varchar
+}
+
+entity "multa" as multa {
+  * id_multa : bigint <<PK>>
+  id_devolucion : bigint <<FK, UNIQUE>>
+  fecha : date
+  motivo : varchar
+  monto : numeric(10,2)
+}
+
+socio ||--o{ prestamo : solicita
+libro ||--o{ prestamo : incluye
+prestamo ||--o| devolucion : se_devuelve_en
+devolucion ||--o| multa : genera
+@enduml
