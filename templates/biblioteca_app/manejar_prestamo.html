@@ -1,0 +1,79 @@
+{% extends 'biblioteca_app/base.html' %}
+
+{% block title %}Registrar Préstamo - Biblioteca{% endblock %}
+
+{% block content %}
+    <h1 class="page-title"><i class="bi bi-clipboard-check"></i> Registrar Préstamo</h1>
+    
+    {% if mensaje %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> {{ mensaje }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endif %}
+    
+    {% if prestamo_info %}
+        <div class="card info-card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Detalles del Préstamo</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1"><strong><i class="bi bi-person"></i> Socio:</strong></p>
+                        <p class="mb-0 fs-5 text-primary">{{ prestamo_info.socio }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1"><strong><i class="bi bi-book"></i> Libro:</strong></p>
+                        <p class="mb-0 fs-5 text-primary">{{ prestamo_info.libro }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong><i class="bi bi-calendar-check"></i> Fecha de Inicio:</strong></p>
+                        <p class="mb-0"><span class="badge bg-success fs-6">{{ prestamo_info.fecha_inicio|date:"d/m/Y" }}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong><i class="bi bi-calendar-event"></i> Estado:</strong></p>
+                        <p class="mb-0"><span class="badge bg-info fs-6">Activo</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="socio_id" class="form-label">Selecciona Socio:</label>
+                    <select class="form-select" id="socio_id" name="socio_id" required>
+                        <option value="">-- Seleccione un socio --</option>
+                        {% for socio in socios %}
+                        <option value="{{ socio.id }}">{{ socio.nombre_completo }} (DNI: {{ socio.dni }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="libro_id" class="form-label">Selecciona Libro (Solo disponibles):</label>
+                    <select class="form-select" id="libro_id" name="libro_id" required>
+                        <option value="">-- Seleccione un libro --</option>
+                        {% for libro in libros %}
+                        <option value="{{ libro.id }}">{{ libro.titulo }} - {{ libro.autor }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-save"></i> Registrar Préstamo
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al inicio
+        </a>
+    </div>
+{% endblock %}

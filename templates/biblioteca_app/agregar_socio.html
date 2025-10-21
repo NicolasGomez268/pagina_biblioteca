@@ -1,0 +1,46 @@
+{% extends 'biblioteca_app/base.html' %}
+
+{% block title %}Agregar Socio - Biblioteca{% endblock %}
+
+{% block content %}
+    <h1 class="page-title"><i class="bi bi-person-plus-fill"></i> Agregar Socio</h1>
+    
+    {% if mensaje %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> {{ mensaje }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endif %}
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="dni" class="form-label">DNI:</label>
+                    <input type="text" class="form-control" id="dni" name="dni" required placeholder="Ingrese el DNI">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="nro_socio" class="form-label">Número de Socio:</label>
+                    <input type="text" class="form-control" id="nro_socio" name="nro_socio" required placeholder="Ingrese el número de socio">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="nombre_completo" class="form-label">Nombre Completo:</label>
+                    <input type="text" class="form-control" id="nombre_completo" name="nombre_completo" required placeholder="Ingrese el nombre completo">
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-save"></i> Agregar Socio
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al inicio
+        </a>
+    </div>
+{% endblock %}

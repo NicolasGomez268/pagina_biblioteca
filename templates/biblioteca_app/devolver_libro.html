@@ -1,0 +1,74 @@
+{% extends 'biblioteca_app/base.html' %}
+
+{% block title %}Devolver Libro - Biblioteca{% endblock %}
+
+{% block content %}
+    <h1 class="page-title"><i class="bi bi-arrow-return-left"></i> Devolver Libro</h1>
+    
+    {% if mensaje %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> {{ mensaje }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endif %}
+    
+    <h2 class="section-title"><i class="bi bi-list-check"></i> Préstamos Activos</h2>
+    
+    {% if prestamos_activos %}
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="prestamo_id" class="form-label">Selecciona el préstamo a devolver:</label>
+                        <select class="form-select" id="prestamo_id" name="prestamo_id" required>
+                            <option value="">-- Seleccione un préstamo --</option>
+                            {% for prestamo in prestamos_activos %}
+                            <option value="{{ prestamo.id }}">
+                                {{ prestamo.socio.nombre_completo }} - {{ prestamo.libro.titulo }} (Fecha: {{ prestamo.fecha_inicio }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Estado del libro al devolver:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="estado_libro" id="bueno" value="bueno" checked>
+                            <label class="form-check-label" for="bueno">
+                                <i class="bi bi-check-circle text-success"></i> Buen estado
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="estado_libro" id="danado" value="dañado">
+                            <label class="form-check-label" for="danado">
+                                <i class="bi bi-exclamation-triangle text-warning"></i> Dañado (Multa: $50)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="estado_libro" id="perdido" value="perdido">
+                            <label class="form-check-label" for="perdido">
+                                <i class="bi bi-x-circle text-danger"></i> Perdido (Multa: $100)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-save"></i> Devolver Libro
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle-fill"></i> No hay préstamos activos en este momento.
+        </div>
+    {% endif %}
+    
+    <div class="mt-3">
+        <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al inicio
+        </a>
+    </div>
+{% endblock %}
+

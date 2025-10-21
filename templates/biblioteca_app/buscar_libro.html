@@ -1,0 +1,80 @@
+{% extends 'biblioteca_app/base.html' %}
+
+{% block title %}Buscar Libro - Biblioteca{% endblock %}
+
+{% block content %}
+    <h1 class="page-title"><i class="bi bi-search"></i> Buscar Libro</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="filtro" class="form-label">Buscar por:</label>
+                        <select class="form-select" id="filtro" name="filtro" required>
+                            <option value="isbn">ISBN</option>
+                            <option value="titulo">Título</option>
+                            <option value="autor">Autor</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label for="busqueda" class="form-label">Término de búsqueda:</label>
+                        <input type="text" class="form-control" id="busqueda" name="busqueda" required placeholder="Ingrese el texto a buscar">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i> Buscar Libros
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    {% if mensaje %}
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ mensaje }}
+        </div>
+    {% endif %}
+    
+    {% if libros %}
+        <h2 class="section-title"><i class="bi bi-list-ul"></i> Resultados de la Búsqueda ({{ libros.count }} libro{{ libros.count|pluralize }})</h2>
+        
+        {% for libro in libros %}
+            <div class="card info-card mb-3">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <p class="mb-1"><strong>ISBN:</strong></p>
+                            <p class="mb-0">{{ libro.isbn }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="mb-1"><strong>Título:</strong></p>
+                            <p class="mb-0 fw-bold text-primary">{{ libro.titulo }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1"><strong>Autor:</strong></p>
+                            <p class="mb-0">{{ libro.autor }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="mb-1"><strong>Estado:</strong></p>
+                            {% if libro.estado == 'Disponible' %}
+                                <span class="badge bg-success">{{ libro.estado }}</span>
+                            {% elif libro.estado == 'Prestado' %}
+                                <span class="badge bg-warning">{{ libro.estado }}</span>
+                            {% else %}
+                                <span class="badge bg-danger">{{ libro.estado }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="mt-3">
+        <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al inicio
+        </a>
+    </div>
+{% endblock %}
+

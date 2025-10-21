@@ -1,0 +1,63 @@
+{% extends 'biblioteca_app/base.html' %}
+
+{% block title %}Inicio - Biblioteca{% endblock %}
+
+{% block content %}
+    <h1 class="page-title"><i class="bi bi-book"></i> Sistema de Biblioteca</h1>
+    
+    <h2 class="section-title"><i class="bi bi-people-fill"></i> Gestión de Socios</h2>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <a href="{% url 'agregar_socio' %}" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-person-plus-fill"></i> Agregar Socio
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'buscar_socio' %}" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-search"></i> Buscar Socio
+            </a>
+        </div>
+    </div>
+    
+    <h2 class="section-title"><i class="bi bi-book-half"></i> Gestión de Libros</h2>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <a href="{% url 'agregar_libro' %}" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-plus-circle-fill"></i> Agregar Libro
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'buscar_libro' %}" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-search"></i> Buscar Libro
+            </a>
+        </div>
+    </div>
+    
+    <h2 class="section-title"><i class="bi bi-journal-check"></i> Gestión de Préstamos</h2>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <a href="{% url 'manejar_prestamo' %}" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-clipboard-check"></i> Registrar Préstamo
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'devolver_libro' %}" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-arrow-return-left"></i> Devolver Libro
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'historial_prestamos' %}" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-clock-history"></i> Historial
+            </a>
+        </div>
+    </div>
+    
+    <h2 class="section-title"><i class="bi bi-gear"></i> Administración</h2>
+    <div class="row g-3">
+        <div class="col-md-12">
+            <a href="/admin/" class="btn btn-success btn-lg w-100" target="_blank">
+                <i class="bi bi-database"></i> Base de Datos (Admin)
+            </a>
+        </div>
+    </div>
+{% endblock %}
