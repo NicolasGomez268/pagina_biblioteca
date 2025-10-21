@@ -1,0 +1,9 @@
+body {
+  min-height: 100vh;
+}
+.card-header {
+  font-weight: 600;
+}
+pre {
+  font-size: 12px;
+}
